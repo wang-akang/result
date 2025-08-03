@@ -85,8 +85,13 @@
   </div>
 
   <script>
-    // 存储项目数据
-    let projects = [];
+    // 从 LocalStorage 获取项目数据，若没有则初始化为空数组
+    let projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+    // 更新 LocalStorage 中的项目数据
+    function saveProjects() {
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }
 
     // 添加项目的函数
     function addProject() {
@@ -99,6 +104,9 @@
 
         // 将项目添加到数组
         projects.push(project);
+
+        // 保存到 LocalStorage
+        saveProjects();
 
         // 更新项目列表
         updateProjectList();
@@ -136,6 +144,7 @@
 
       if (newName && newLink) {
         projects[index] = { name: newName, link: newLink };
+        saveProjects();
         updateProjectList();
       }
     }
@@ -144,9 +153,13 @@
     function deleteProject(index) {
       if (confirm("确定删除此项目吗？")) {
         projects.splice(index, 1);
+        saveProjects();
         updateProjectList();
       }
     }
+
+    // 页面加载时，更新项目列表
+    updateProjectList();
   </script>
 
 </body>
