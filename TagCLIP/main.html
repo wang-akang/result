@@ -1,0 +1,1855 @@
+<!DOCTYPE html><html lang="en"><head>
+<title> TagCLIP</title>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+#wmd-preview{
+  max-width: 210mm;
+  margin: 0 auto;
+}
+/* normal start */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 'Hiragino Sans GB', STHeiti, "Microsoft YaHei", "微软雅黑", 'WenQuanYi Micro Hei', STXihei, "华文细黑", Heiti, "黑体", SimSun, "宋体", Song, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: normal;
+  color: #2f2f2f;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+
+/* link start */
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+a:hover,
+a:active {
+  outline: 0;
+}
+a {
+  color: #0088cc;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #005580;
+  text-decoration: underline;
+}
+/* link end */
+
+
+/* head start */
+h1,h2,h3,h4,h5,h6 {
+  font-weight: bold;
+  text-rendering: optimizelegibility;
+}
+
+h1 {
+  font-size: 2rem;;
+  margin: .8em 0 .6em 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: .7em 0 .5em 0;
+}
+
+h3 {
+  font-size: 1.17rem;
+  margin: .6em 0 .4em 0;
+}
+
+h4 {
+  margin: .5em 0 .3em 0;
+}
+
+video {
+  max-width: 100%;
+}
+
+h5 {
+  font-size: 0.83rem;
+  margin: .5em 0 .3em 0;
+}
+
+h6 {
+  font-size: 0.67rem;
+  margin: .5em 0 .3em 0;
+}
+/* head end */
+
+.xsj_hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px dashed #2f2f2f;
+    border-left: 90px solid transparent;
+    border-right: 90px solid transparent;
+}
+
+p {
+    margin: 1.1em 0 1.6em;
+}
+
+pre{
+    line-height: initial !important;
+    word-wrap: break-word;
+    word-break: break-all;
+    tab-size: 4;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+kbd{
+    display: inline-block;
+    padding: 3px 5px;
+    font-size: 11px;
+    line-height: 10px;
+    color: #2f2f2f;
+    vertical-align: middle;
+    background: #fcfcfc;
+    border: solid 1px #2f2f2f;
+    border-bottom-color: #2f2f2f;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #2f2f2f;
+}
+
+address {
+  display: block;
+  margin-bottom: 20px;
+  font-style: normal;
+  line-height: 20px;
+}
+
+
+small {
+  font-size: 85%;
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+cite {
+  font-style: normal;
+}
+
+
+/* list start */
+ul,ol {
+  padding: 0;
+  margin: 1.1em 0 1.1em 3em;
+}
+
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 1em;
+}
+/* list end */
+
+dl {
+  margin-bottom: 20px;
+}
+
+dt,
+dd {
+  line-height: 20px;
+}
+
+dt {
+  font-weight: bold;
+  line-height: 1.35em;
+}
+
+dd {
+  margin-left: 10px;
+  line-height: 1.35em;
+}
+abbr[title],
+abbr[data-original-title] {
+  cursor: help;
+  border-bottom: 1px dotted #999999;
+}
+
+/* normal end */
+
+
+/* blockquote start */
+blockquote {
+  padding: 20px 20px;
+  margin: 20px 0 20px;
+  border-left: 5px solid rgba(153, 153, 153, 0.2);
+  background: rgba(204, 204, 204, 0.2);
+}
+
+blockquote p {
+    margin: 1.1em 0 1.1em;
+}
+
+blockquote>ol.markdown_ol, blockquote>ul.markdown_ul{
+  margin-left: 1.1em;
+}
+
+blockquote>*:first-child {
+  margin-top: 0;
+}
+
+blockquote>*:last-child {
+  margin-bottom: 0;
+}
+
+blockquote small {
+  display: block;
+  line-height: 20px;
+  color: #999999;
+}
+
+blockquote small:before {
+  content: '\2014 \00A0';
+}
+
+blockquote footer{
+    margin: 1em 0;
+    font-style: italic;
+}
+
+blockquote footer cite {
+    margin: 0 1em;
+}
+
+/* blockquote end */
+
+/**
+ * Treeview syntax highlighting based on highlight.js
+ * Copyright (c) 2014-2015, Asciidocfx Team, (MIT Licensed)
+ * https://github.com/asciidocfx/highlight-treeview.js
+ */
+.language-treeview.hljs{
+  position: relative;
+}
+.hljs-folder,
+.hljs-hiddenfile,
+.hljs-file {
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+    height: 16px;
+}
+.hljs-folder:before,
+.hljs-file:before,
+.hljs-hiddenfile:before {
+    top: 0;
+    content: '';
+    width: 14px;
+    height: 12px;
+    margin-top: 0px;
+    margin-right: 3px;
+    position: relative;
+    display: inline-block;
+    background-size: 14px;
+    background-repeat: no-repeat;
+}
+.hljs-file:before,
+.hljs-hiddenfile:before {
+    height: 14px;
+    margin-left: 1px;
+}
+.hljs-hiddenfile {
+    opacity: 0.6;
+}
+.hljs-file.photo:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c5";
+}
+.hljs-file.plain:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f016";
+}
+.hljs-file.source:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c9";
+}
+.hljs-file.archive:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c6";
+}
+.hljs-file.audio:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c7";
+}
+.hljs-file.video:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c8";
+}
+.hljs-file.pdf:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c1";
+}
+.hljs-file.xls:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c3";
+}
+.hljs-file.doc:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c2";
+}
+.hljs-file.ppt:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1c4";
+}
+.hljs-folder:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f114";
+}
+.hljs-hiddenfile:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f016";
+}
+.hljs-tvline {
+    margin-left: 6px;
+    position: absolute;
+    text-indent: -99em;
+    padding-bottom: 8px;
+    vertical-align: top;
+    display: inline-block;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgb(94, 144, 117);
+}
+.hljs-folder-branch {
+    width: 8px;
+    height: 8px;
+    margin-top: -1px;
+    margin-left: 6px;
+    text-indent: -99em;
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(94, 144, 117);
+}
+.hljs-folder-branch.win {
+    width: 14px;
+    margin-right: 2px;
+}
+.hljs-folder-last-branch {
+    height: 7px;
+    width: 7px;
+    margin-left: 6px;
+    text-indent: -99em;
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(94, 144, 117);
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgb(94, 144, 117);
+}
+.hljs-folder-last-branch.win {
+    width: 13px;
+    margin-right: 2px;
+}
+
+
+/**
+ * Treeview syntax highlighting based on highlight.js
+ */
+
+/*wavedrom start*/
+
+.wavedrom_svg text, .wavedrom_svg_defs text {
+    font-size:11pt;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+    font-stretch:normal;
+    text-align:center;
+    fill-opacity:1;
+    font-family:Helvetica
+}
+.wavedrom_svg .muted, .wavedrom_svg_defs .muted {
+    fill:#aaa
+}
+.wavedrom_svg .warning, .wavedrom_svg_defs .warning {
+    fill:#f6b900
+}
+.wavedrom_svg .error, .wavedrom_svg_defs .error {
+    fill:#f60000
+}
+.wavedrom_svg .info, .wavedrom_svg_defs .info {
+    fill:#0041c4
+}
+.wavedrom_svg .success, .wavedrom_svg_defs .success {
+    fill:#00ab00
+}
+.wavedrom_svg .h1, .wavedrom_svg_defs .h1 {
+    font-size:33pt;
+    font-weight:bold
+}
+.wavedrom_svg .h2, .wavedrom_svg_defs .h2 {
+    font-size:27pt;
+    font-weight:bold
+}
+.wavedrom_svg .h3, .wavedrom_svg_defs .h3 {
+    font-size:20pt;
+    font-weight:bold
+}
+.wavedrom_svg .h4, .wavedrom_svg_defs .h4 {
+    font-size:14pt;
+    font-weight:bold
+}
+.wavedrom_svg .h5, .wavedrom_svg_defs .h5 {
+    font-size:11pt;
+    font-weight:bold
+}
+.wavedrom_svg .h6, .wavedrom_svg_defs .h6 {
+    font-size:8pt;
+    font-weight:bold
+}
+.wavedrom_svg_defs .s1 {
+    fill:none;
+    stroke:#000;
+    stroke-width:1;
+    stroke-linecap:round;
+    stroke-linejoin:miter;
+    stroke-miterlimit:4;
+    stroke-opacity:1;
+    stroke-dasharray:none
+}
+.wavedrom_svg_defs .s2 {
+    fill:none;
+    stroke:#000;
+    stroke-width:0.5;
+    stroke-linecap:round;
+    stroke-linejoin:miter;
+    stroke-miterlimit:4;
+    stroke-opacity:1;
+    stroke-dasharray:none
+}
+.wavedrom_svg_defs .s3 {
+    color:#000;
+    fill:none;
+    stroke:#000;
+    stroke-width:1;
+    stroke-linecap:round;
+    stroke-linejoin:miter;
+    stroke-miterlimit:4;
+    stroke-opacity:1;
+    stroke-dasharray:1,3;
+    stroke-dashoffset:0;
+    marker:none;
+    visibility:visible;
+    display:inline;
+    overflow:visible;
+    enable-background:accumulate
+}
+.wavedrom_svg_defs .s4 {
+    color:#000;
+    fill:none;
+    stroke:#000;
+    stroke-width:1;
+    stroke-linecap:round;
+    stroke-linejoin:miter;
+    stroke-miterlimit:4;
+    stroke-opacity:1;
+    stroke-dasharray:none;
+    stroke-dashoffset:0;
+    marker:none;
+    visibility:visible;
+    display:inline;
+    overflow:visible
+}
+.wavedrom_svg_defs .s5 {
+    fill:#fff;
+    stroke:none
+}
+.wavedrom_svg_defs .s6 {
+    color:#000;
+    fill:#ffffb4;
+    fill-opacity:1;
+    fill-rule:nonzero;
+    stroke:none;
+    stroke-width:1px;
+    marker:none;
+    visibility:visible;
+    display:inline;
+    overflow:visible;
+    enable-background:accumulate
+}
+.wavedrom_svg_defs .s7 {
+    color:#000;
+    fill:#ffe0b9;
+    fill-opacity:1;
+    fill-rule:nonzero;
+    stroke:none;
+    stroke-width:1px;
+    marker:none;
+    visibility:visible;
+    display:inline;
+    overflow:visible;
+    enable-background:accumulate
+}
+.wavedrom_svg_defs .s8 {
+    color:#000;
+    fill:#b9e0ff;
+    fill-opacity:1;
+    fill-rule:nonzero;
+    stroke:none;
+    stroke-width:1px;
+    marker:none;
+    visibility:visible;
+    display:inline;
+    overflow:visible;
+    enable-background:accumulate
+}
+.wavedrom_svg_defs .s9 {
+    fill:#000;
+    fill-opacity:1;
+    stroke:none
+}
+.wavedrom_svg_defs .s10 {
+    color:#000;
+    fill:#fff;
+    fill-opacity:1;
+    fill-rule:nonzero;
+    stroke:none;
+    stroke-width:1px;
+    marker:none;
+    visibility:visible;
+    display:inline;
+    overflow:visible;
+    enable-background:accumulate
+}
+.wavedrom_svg_defs .s11 {
+    fill:#0041c4;
+    fill-opacity:1;
+    stroke:none
+}
+.wavedrom_svg_defs .s12 {
+    fill:none;
+    stroke:#0041c4;
+    stroke-width:1;
+    stroke-linecap:round;
+    stroke-linejoin:miter;
+    stroke-miterlimit:4;
+    stroke-opacity:1;
+    stroke-dasharray:none
+}
+
+/*wavedrom stop*/
+
+
+/* fontawesome */
+
+/*!
+ * Font Awesome Free 5.7.1 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+svg:not(:root).svg-inline--fa {
+  overflow: visible; }
+
+.svg-inline--fa {
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em; }
+  .svg-inline--fa.fa-lg {
+    vertical-align: -.225em; }
+  .svg-inline--fa.fa-w-1 {
+    width: 0.0625em; }
+  .svg-inline--fa.fa-w-2 {
+    width: 0.125em; }
+  .svg-inline--fa.fa-w-3 {
+    width: 0.1875em; }
+  .svg-inline--fa.fa-w-4 {
+    width: 0.25em; }
+  .svg-inline--fa.fa-w-5 {
+    width: 0.3125em; }
+  .svg-inline--fa.fa-w-6 {
+    width: 0.375em; }
+  .svg-inline--fa.fa-w-7 {
+    width: 0.4375em; }
+  .svg-inline--fa.fa-w-8 {
+    width: 0.5em; }
+  .svg-inline--fa.fa-w-9 {
+    width: 0.5625em; }
+  .svg-inline--fa.fa-w-10 {
+    width: 0.625em; }
+  .svg-inline--fa.fa-w-11 {
+    width: 0.6875em; }
+  .svg-inline--fa.fa-w-12 {
+    width: 0.75em; }
+  .svg-inline--fa.fa-w-13 {
+    width: 0.8125em; }
+  .svg-inline--fa.fa-w-14 {
+    width: 0.875em; }
+  .svg-inline--fa.fa-w-15 {
+    width: 0.9375em; }
+  .svg-inline--fa.fa-w-16 {
+    width: 1em; }
+  .svg-inline--fa.fa-w-17 {
+    width: 1.0625em; }
+  .svg-inline--fa.fa-w-18 {
+    width: 1.125em; }
+  .svg-inline--fa.fa-w-19 {
+    width: 1.1875em; }
+  .svg-inline--fa.fa-w-20 {
+    width: 1.25em; }
+  .svg-inline--fa.fa-pull-left {
+    margin-right: .3em;
+    width: auto; }
+  .svg-inline--fa.fa-pull-right {
+    margin-left: .3em;
+    width: auto; }
+  .svg-inline--fa.fa-border {
+    height: 1.5em; }
+  .svg-inline--fa.fa-li {
+    width: 2em; }
+  .svg-inline--fa.fa-fw {
+    width: 1.25em; }
+
+.fa-layers svg.svg-inline--fa {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0; }
+
+.fa-layers {
+  display: inline-block;
+  height: 1em;
+  position: relative;
+  text-align: center;
+  vertical-align: -.125em;
+  width: 1em; }
+  .fa-layers svg.svg-inline--fa {
+    -webkit-transform-origin: center center;
+            transform-origin: center center; }
+
+.fa-layers-text, .fa-layers-counter {
+  display: inline-block;
+  position: absolute;
+  text-align: center; }
+
+.fa-layers-text {
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transform-origin: center center;
+          transform-origin: center center; }
+
+.fa-layers-counter {
+  background-color: #ff253a;
+  border-radius: 1em;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: #fff;
+  height: 1.5em;
+  line-height: 1;
+  max-width: 5em;
+  min-width: 1.5em;
+  overflow: hidden;
+  padding: .25em;
+  right: 0;
+  text-overflow: ellipsis;
+  top: 0;
+  -webkit-transform: scale(0.25);
+          transform: scale(0.25);
+  -webkit-transform-origin: top right;
+          transform-origin: top right; }
+
+.fa-layers-bottom-right {
+  bottom: 0;
+  right: 0;
+  top: auto;
+  -webkit-transform: scale(0.25);
+          transform: scale(0.25);
+  -webkit-transform-origin: bottom right;
+          transform-origin: bottom right; }
+
+.fa-layers-bottom-left {
+  bottom: 0;
+  left: 0;
+  right: auto;
+  top: auto;
+  -webkit-transform: scale(0.25);
+          transform: scale(0.25);
+  -webkit-transform-origin: bottom left;
+          transform-origin: bottom left; }
+
+.fa-layers-top-right {
+  right: 0;
+  top: 0;
+  -webkit-transform: scale(0.25);
+          transform: scale(0.25);
+  -webkit-transform-origin: top right;
+          transform-origin: top right; }
+
+.fa-layers-top-left {
+  left: 0;
+  right: auto;
+  top: 0;
+  -webkit-transform: scale(0.25);
+          transform: scale(0.25);
+  -webkit-transform-origin: top left;
+          transform-origin: top left; }
+
+.fa-lg {
+  font-size: 1.33333em;
+  line-height: 0.75em;
+  vertical-align: -.0667em; }
+
+.fa-xs {
+  font-size: .75em; }
+
+.fa-sm {
+  font-size: .875em; }
+
+.fa-1x {
+  font-size: 1em; }
+
+.fa-2x {
+  font-size: 2em; }
+
+.fa-3x {
+  font-size: 3em; }
+
+.fa-4x {
+  font-size: 4em; }
+
+.fa-5x {
+  font-size: 5em; }
+
+.fa-6x {
+  font-size: 6em; }
+
+.fa-7x {
+  font-size: 7em; }
+
+.fa-8x {
+  font-size: 8em; }
+
+.fa-9x {
+  font-size: 9em; }
+
+.fa-10x {
+  font-size: 10em; }
+
+.fa-fw {
+  text-align: center;
+  width: 1.25em; }
+
+.fa-ul {
+  list-style-type: none;
+  margin-left: 2.5em;
+  padding-left: 0; }
+  .fa-ul > li {
+    position: relative; }
+
+.fa-li {
+  left: -2em;
+  position: absolute;
+  text-align: center;
+  width: 2em;
+  line-height: inherit; }
+
+.fa-border {
+  border: solid 0.08em #eee;
+  border-radius: .1em;
+  padding: .2em .25em .15em; }
+
+.fa-pull-left {
+  float: left; }
+
+.fa-pull-right {
+  float: right; }
+
+.far,.fa {
+  margin: 0 .3em;
+}
+.fa.fa-pull-left,
+.fas.fa-pull-left,
+.far.fa-pull-left,
+.fal.fa-pull-left,
+.fab.fa-pull-left {
+  margin-right: .3em; }
+
+.fa.fa-pull-right,
+.fas.fa-pull-right,
+.far.fa-pull-right,
+.fal.fa-pull-right,
+.fab.fa-pull-right {
+  margin-left: .3em; }
+
+.fa-spin {
+  -webkit-animation: fa-spin 2s infinite linear;
+          animation: fa-spin 2s infinite linear; }
+
+.fa-pulse {
+  -webkit-animation: fa-spin 1s infinite steps(8);
+          animation: fa-spin 1s infinite steps(8); }
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.fa-rotate-90 {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg); }
+
+.fa-rotate-180 {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
+.fa-rotate-270 {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg); }
+
+.fa-flip-horizontal {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
+  -webkit-transform: scale(-1, 1);
+          transform: scale(-1, 1); }
+
+.fa-flip-vertical {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
+  -webkit-transform: scale(1, -1);
+          transform: scale(1, -1); }
+
+.fa-flip-both, .fa-flip-horizontal.fa-flip-vertical {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
+  -webkit-transform: scale(-1, -1);
+          transform: scale(-1, -1); }
+
+:root .fa-rotate-90,
+:root .fa-rotate-180,
+:root .fa-rotate-270,
+:root .fa-flip-horizontal,
+:root .fa-flip-vertical,
+:root .fa-flip-both {
+  -webkit-filter: none;
+          filter: none; }
+
+.fa-stack {
+  display: inline-block;
+  height: 2em;
+  position: relative;
+  width: 2.5em; }
+
+.fa-stack-1x,
+.fa-stack-2x {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0; }
+
+.svg-inline--fa.fa-stack-1x {
+  height: 1em;
+  width: 1.25em; }
+
+.svg-inline--fa.fa-stack-2x {
+  height: 2em;
+  width: 2.5em; }
+
+.fa-inverse {
+  color: #fff; }
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+
+.sr-only-focusable:active, .sr-only-focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto; }
+
+/* fontawesome end*/
+
+/* xsj patch start */
+
+.xsj_anchor{
+  overflow: hidden;
+  float: right;
+}
+
+.blank_anchor_id {
+    float: right;
+    width: 1px;
+    height: 0px;
+}
+.blank_anchor_id {
+    visibility: hidden;
+}
+.blank_anchor_id:before {
+    content: 'a';
+}
+.xsj_foreignObject{
+  width: 100%!important;
+  height: 100%!important;
+  text-align: initial;
+  word-spacing: normal;
+}
+.xsj_foreignObject hr{
+    margin: inherit;
+}
+.xsj_foreignObject.xsj_drawio_foreignObject *{
+  font-size: inherit;
+}
+.xsj_export_pdf .xsj_foreignObject.xsj_drawio_foreignObject *{
+  font-size: 85%;
+}
+
+.xsj_export_pdf ins .mathjax .MathJax_SVG {
+    border-bottom: 2px solid;
+}
+
+.xsj_foreignObject.xsj_drawio_foreignObject h1{
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.xsj_foreignObject.xsj_drawio_foreignObject h2{
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.xsj_foreignObject.xsj_drawio_foreignObject h3{
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.xsj_foreignObject.xsj_drawio_foreignObject h4{
+  font-size: 1em;
+  margin-block-start: 1.33em;
+  margin-block-end: 1.33em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.xsj_foreignObject.xsj_drawio_foreignObject h5{
+  font-size: .83em;
+  margin-block-start: 1.67em;
+  margin-block-end: 1.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.xsj_foreignObject.xsj_drawio_foreignObject h6{
+  font-size: .67em;
+  margin-block-start: 2.33em;
+  margin-block-end: 2.33em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+
+/* xsj patch end */
+
+
+/* title start */
+h1.story_title {
+    font-size: 2.1rem;
+    margin: 0.7em 0;
+}
+/* title end */
+
+/* tag start */
+.story_tags {
+    margin: 0 0 1.2em;
+}
+.tag.label{
+    display: inline-block;
+    vertical-align: baseline;
+    line-height: 1;
+    margin: 0 0.5em 0.5em 0;
+    background: #e2e2e2;
+    border-color: #e2e2e2;
+    background-image: none;
+    padding: 0.6em 0.8em;
+    font-weight: bold;
+    border-radius: 0.2857rem;
+    box-sizing: border-box;
+    font-size: 12px;
+}
+/* tag end */
+
+/* emoji */
+img.emoji {
+    width: 1em;
+    line-height: 1em;
+    vertical-align: baseline;
+    margin-bottom: 0;
+}
+/* emoji */
+
+/* align grammar start*/
+
+.story_align_left, .story_align_left .story_image_container {
+    text-align: left;
+}
+.story_align_right, .story_align_right .story_image_container {
+    text-align: right;
+}
+.story_align_center, .story_align_center .story_image_container {
+    text-align: center;
+}
+.story_align_justify, .story_align_justify .story_image_container {
+    text-align: justify;
+}
+
+/* align grammar end*/
+
+/*mindmap start*/
+.mindmap_container {
+  text-align: center;
+}
+
+.xsj_mindmap_caption{
+   border-bottom: 1px solid #d9d9d9;
+  display: inline-block;
+  color: #999;
+  padding: 10px;
+}
+/*mindmap end*/
+
+
+
+/* table start*/
+
+table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+  word-break: break-word;
+  border: 1px solid #d9d9da;
+}
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #d9d9da;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table thead th {
+  vertical-align: bottom;
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #d9d9da;
+}
+
+.table .table {
+  background-color: #ffffff;
+}
+
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+  background-color: #f9f9f9;
+}
+
+.table-celled.table tr td,.table-celled.table tr th {
+    border-left: 1px solid #d9d9da;
+}
+
+/* table end*/
+
+/*code start*/
+
+code {
+    background-color: #F0F0F0;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 0 .225em;
+    color: #880000;
+}
+body code{
+    border: 0;
+    border-radius: 4px;
+    font-size: .9em;
+}
+
+.hljs, .hljs * {
+  overflow: visible !important;
+} 
+
+body .xiaoshujiang_code {
+    border: 0;
+    border-radius: 4px;
+    font-size: .9em;
+}
+.xiaoshujiang_code ol{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.xiaoshujiang_pre {
+    line-height: initial !important;
+    word-wrap: break-word;
+    word-break: break-all;
+    tab-size: 4;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+.xiaoshujiang_code_container pre{
+    margin: 0px;
+}
+.xiaoshujiang_code_container.xiaoshujiang_code_chunk{
+    box-shadow: 0 0 0 1px #A3C293 inset,0 0 0 0 transparent;
+    margin: 1em 0;
+    padding: 1em;
+}
+.xiaoshujiang_code_container.xiaoshujiang_code_chunk_hide_code{
+    box-shadow: initial;
+    padding: initial;
+    padding-bottom: 2em;
+}
+.xiaoshujiang_code_container .out_put{
+    box-shadow: 0 0 0 1px #A3C293 inset,0 0 0 0 transparent;
+    margin: 1em 0;
+    background-color: #FCFFF5;
+    color: #2C662D;
+    padding: 1em;
+}
+.xiaoshujiang_code_container .out_put_error{
+    background-color: #FFF6F6;
+    color: #9F3A38;
+    margin: 1em 0;
+    box-shadow: 0 0 0 1px #E0B4B4 inset,0 0 0 0 transparent;
+    padding: 1em;
+}
+
+/*code end*/
+
+/* code line nums start*/
+
+code.hljs.code_linenums, .xiaoshujiang_code.hljs.code_linenums{
+    position: relative;
+}
+.ol_linenums{
+    padding: 0px;
+    margin-left: 2em;
+    border-left: 1px solid #e0e0e0;
+}
+.li_linenum{
+    position:relative;
+    margin-left: 0.5em;
+    list-style: none;
+    counter-increment: lines 1;
+}
+.li_linenum.li_list_style{
+    list-style: inherit;
+    margin-left: 5px;
+}
+.li_linenum:before, .li_linenum_before_span{
+    content: counter(lines, decimal);
+  position: absolute;
+  left: -3em;
+  text-align: center;
+  width: 2.5em;
+  vertical-align: top;
+}
+.li_linenum_before_span_hide{
+    display: none;
+}
+.xiaoshujiang_code .code_line_break_hack{
+    margin:0;
+    border:0;
+    border-top:0;
+    border-bottom:0;
+}
+.component_attachment, .code_line_break_hack{
+  display: none;
+  visibility: collapse!important;
+  height: 0!important;
+}
+
+/* code line nums end*/
+
+/* block code start */
+.xiaoshujiang_code_container {
+    margin: 1em 0px 2em;
+    position: relative;
+}
+
+
+.xiaoshujiang_code_title_container{
+    font-size: 50%;
+}
+.xiaoshujiang_code_title_container>.xiaoshujiang_code_infos{
+    float: right;
+}
+/* block code end */
+
+
+/*mark start*/
+
+.mark{
+  border: 0;
+  background-color: rgba(221, 243, 231, 0.4);
+  color: #105012;
+  padding: 2px 4px;
+}
+
+.mark_color_000000{
+  color: transparent!important;
+  background: initial!important;
+  border-bottom: 2px solid #3a4c42;
+  transition: color .6s;
+}
+
+.mark_color_000000:hover{
+  color: black!important;
+}
+
+.li_linenum.line_mark:before, .line_mark .li_linenum_before_span {
+    background: rgba(65, 174, 60, 0.6);
+}
+.line_mark{
+  background: rgba(65, 174, 60, 0.3);
+}
+
+
+
+.li_linenum.line_mark_warn:before, .line_mark_warn .li_linenum_before_span {
+    background: rgba(252, 121, 48, .6);
+}
+.line_mark_warn{
+  background: rgba(252, 121, 48, .3);
+}
+
+.li_linenum.line_mark_info:before, .line_mark_info .li_linenum_before_span {
+    background: rgba(97, 154, 195, .6);
+}
+.line_mark_info{
+  background: rgba(97, 154, 195, .3);
+}
+
+.li_linenum.line_mark_error:before, .line_mark_error .li_linenum_before_span {
+    background: rgba(210, 118, 118, 0.6);
+}
+.line_mark_error{
+  background: rgba(210, 174, 174, 0.3);
+}
+
+.line_mark_del{
+  text-decoration: line-through;
+  text-decoration: 2px line-through;
+}
+.line_mark_ins{
+  text-decoration: underline;
+  text-decoration: 2px underline;
+}
+
+code .mark, .xiaoshujiang_code .mark{
+    border-radius: 0px;
+    font-size: initial;
+    padding: initial;
+}
+/*mark end*/
+
+
+.xsj_code_strong{
+  -webkit-text-emphasis: triangle;
+  -webkit-text-emphasis-position: under;
+}
+
+/* attachment start */
+a.attachment{
+    background: #ecf0f3;
+    border: 1px solid #bec6cb;
+    display: inline-block;
+    padding: 0.6em;
+    margin: 0.5em 0.5em;
+    min-width: 250px;
+}
+a.attachment i.fa{
+    font-size: 3em;
+  float: left;
+  margin-right: 0.2em;
+}
+a.attachment .filename{
+    vertical-align: top;
+  text-align: left;
+  font-weight: bold;
+}
+a.attachment .filesize{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  opacity: .6;
+  font-size: 80%;
+  white-space: nowrap;
+}
+/* attachment end */
+
+
+/*code chunk video, slideshare start*/
+.video_container{
+    width: 100%;
+    display: table;
+    text-align: center;
+    position: relative;
+    padding-bottom: 56.25%!important;
+}
+
+.video_container iframe{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    vertical-align: middle;
+}
+
+.slideshare_container .inner{
+    position: relative;
+    width: 100%;
+}
+
+.slideshare_container .inner iframe{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/*code chunk video, slideshare start*/
+
+
+
+/*mermaid start*/
+
+.mermaid {
+    text-align: center;
+}
+
+.mermaid_svg{
+    font-family: monospace;
+    text-align: initial;
+}
+.mermaid_svg foreignObject{
+  overflow: visible;
+}
+.mermaid_svg foreignObject i.fa{
+  min-width: 16px;
+}
+.mermaid_svg .svg-inline--fa,.mermaid_svg .svg-inline--fa path {
+    fill: initial!important;
+    stroke: initial!important;
+}
+
+.mermaid_svg .grid path {
+  stroke: transparent;
+}
+/*mermaid stop*/
+
+
+/* patch evernote start*/
+.toc ul {
+    list-style-type: none;
+}
+/* patch evernote end*/
+
+
+/* image start*/
+img {
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+    border: 0;
+}
+
+.story_image_container{
+    text-align: center;
+}
+.story_image_container>.story_image{
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+}
+.story_image_caption, .xsj_remote_html_caption {
+    border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 10px;
+}
+.story_image_blank_caption, .xsj_remote_html_blank_caption{
+    display: none;
+}
+.story_image>img{
+    border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);
+}
+
+.story_inline_image{
+  display: inline-block;
+}
+.story_inline_image>img{
+    vertical-align: bottom;
+}
+/* image end*/
+
+.story_remote_resource_block{
+    text-align: center;
+}
+
+/* task list start */
+.task-list-item{
+    list-style: none;
+}
+.task-list-item.li_list_style{
+    list-style:inherit;
+}
+.task-list-item > p {
+  margin: 0;
+}
+
+/* task list end */
+
+/* other start */
+em.cjk_emphasis{
+    font-style: normal;
+    font-family: Georgia,"Times New Roman",Times,"楷体","AR PL UKai CN", "NSimSun","Songti SC","SimSun",serif!important;
+}
+
+.flow-chart, .sequence-diagram{
+    text-align: center;
+}
+.plot, .plot-image{
+    text-align: center;
+    min-height: 200px;
+    min-width: 200px;
+}
+
+ins .mathjax .MathJax_SVG {
+    border-bottom: 1px solid;
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+}
+
+.mathjax-container{
+    text-align: center;
+    margin: 0 auto;
+}
+div.mathjax{
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.mathjax-container .math_equation_table{
+  border: 0;
+  width: 100%;
+}
+.mathjax-container .math_equation_table td{
+  text-align: center;
+  vertical-align: top;
+}
+
+.xsj_export_pdf .fa-border {
+  border: none;
+  border-radius: initial;
+  padding: initial;
+  margin: 0 .25em;
+  outline-offset: .2em;
+  outline: 1px solid #eee;
+}
+.preview.html_preview{
+  max-width: 100%;
+}
+
+.xsj_export_pdf.preview.html_preview{
+  max-width: initial;
+  border: initial;
+  margin: initial;
+  padding: initial;
+  border-radius: initial;
+  box-shadow: initial;
+}
+/* other end */
+
+
+
+
+/* blockquote start*/
+/** only icon **/
+.html_preview>.markdown_blockquote{
+    position: relative;
+}
+.html_preview>.markdown_blockquote.markdown_blockquote_icon{
+    margin-left: 10px;
+}
+.html_preview>.markdown_blockquote>.xsj_paragraph:first-child>i:first-child{
+    background-color: #dedede;
+    border-radius: 100%;
+    left: -18px;
+    line-height: 30px;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    font-size: 16px!important;
+    padding: 0;
+    border: 0px;
+
+}
+
+.html_preview>.markdown_blockquote>.xsj_paragraph:first-child>.svg-image:first-child,
+.html_preview>.markdown_blockquote>.xsj_paragraph:first-child>svg.svg-inline--fa:first-child {
+    background-color: #dedede;
+    border-radius: 100%;
+    left: -15px;
+    line-height: 30px;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    box-shadow: 0 0 0px 5px #dedede;
+    font-size: 16px!important;
+    padding: 0;
+    border: 0px;
+    outline: 0;
+    margin: 0;
+}
+/** only icon **/
+/** heading **/
+.html_preview > .markdown_blockquote.markdown_blockquote_heading {
+    margin-top: 40px;
+    page-break-inside: auto;
+}
+.html_preview>.markdown_blockquote_heading>.xsj_heading:first-child {
+    display: block;
+    font-size: 1.4em;
+    background-color: #dedede;
+    padding: 0 15px;
+    margin: -20px;
+    position: relative;
+}
+.html_preview>.markdown_blockquote_heading>.xsj_heading:first-child .xsj_heading_content>i:first-child {
+    background-color: #dedede;
+    border-radius: 100%;
+    left: -16px;
+    top: .25em;
+    line-height: 30px;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    font-size: 16px !important;
+    padding: 0;
+    border: 0px;
+}
+
+.html_preview>.markdown_blockquote_heading>.xsj_heading:first-child .xsj_heading_content>.svg-image:first-child,
+.html_preview>.markdown_blockquote_heading>.xsj_heading:first-child .xsj_heading_content>svg.svg-inline--fa:first-child {
+    background-color: #dedede;
+    border-radius: 100%;
+    left: -15px;
+    top: .25em;
+    line-height: 30px;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    box-shadow: 0 0 0px 5px #dedede;
+    font-size: 16px!important;
+    padding: 0;
+    border: 0px;
+    outline: 0;
+    margin: 0;
+}
+
+/** heading **/
+/* blockquote end*/
+
+
+@media print{
+  body{
+    font-size: 18px;
+    word-wrap: break-word;
+    word-break: break-word;
+    background: initial!important;
+    font-kerning: normal;
+    text-rendering: geometricPrecision;
+  }
+  .preview.html_preview{
+    max-width: initial;
+    border: initial;
+    margin: initial;
+    padding: initial;
+    border-radius: initial;
+    box-shadow: initial;
+  }
+  .xiaoshujiang_element.xsj_anchor{
+    position: absolute;
+  }
+  tr { page-break-inside: avoid; }
+  .story_image_container{
+     page-break-inside: avoid;
+  }
+  blockquote{
+    page-break-inside: avoid;
+  }
+
+  .xsj_underline{
+      page-break-after: always;
+      visibility: hidden;
+  }
+}
+
+body{color:#2f2f2f}.xsj_hr{border-top:1px dashed #2f2f2f}kbd{color:#2f2f2f;border:solid 1px #2f2f2f;border-bottom-color:#2f2f2f;box-shadow:inset 0 -1px 0 #2f2f2f}table{border:1px solid rgba(34,36,38,.15)}.table td,.table th{border-top:1px solid #ddd}.table tbody+tbody{border-top:2px solid #ddd}.table .table{background:#fff}.table-striped tbody>tr:nth-child(odd)>td,.table-striped tbody>tr:nth-child(odd)>th{background:#f9f9f9}.table-celled.table tr td,.table-celled.table tr th{border-left:1px solid rgba(34,36,38,.1)}.xiaoshujiang_code .mark,code .mark{background:rgba(160,234,194,.7)}.markdown_vertical>*,.markdown_vertical>:first-child{margin-top:.8em}.markdown_vertical{font-family:YRDZST,"Noto Serif CJK SC",FandolKai,"Adobe Kaiti Std","Adobe 楷体 Std",FZKai-Z03S,"方正楷体简体","AR PL UKai CN","楷体",NSimSun,SimSun,serif;font-size:1.2em;writing-mode:vertical-rl;border:initial;border-left:initial;background:initial;margin-left:auto!important;margin-right:0}.markdown_vertical em{-webkit-text-emphasis:circle}.markdown_vertical strong{border-left:2px solid}.html_preview>.markdown_blockquote_heading.markdown_vertical>.xsj_heading:first-child{position:initial;background:initial;border:initial;background-color:initial;border-top:initial}.html_preview>.markdown_blockquote.markdown_vertical>.xsj_paragraph:first-child>i:first-child,.html_preview>.markdown_blockquote_heading.markdown_vertical>.xsj_heading:first-child .xsj_heading_content>i:first-child{position:initial;background-color:initial}@media print{.markdown_vertical{writing-mode:initial}.markdown_vertical strong{border-left:0;border-bottom:2px solid}}
+/*
+
+Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #F0F0F0;
+}
+
+
+/* Base color: saturation 0; */
+
+.hljs,
+.hljs-subst {
+  color: #444;
+}
+
+.hljs-comment {
+  color: #888888;
+}
+
+.hljs-keyword,
+.hljs-attribute,
+.hljs-selector-tag,
+.hljs-meta .hljs-keyword,
+.hljs-doctag,
+.hljs-name {
+  font-weight: bold;
+}
+
+
+/* User color: hue: 0 */
+
+.hljs-type,
+.hljs-string,
+.hljs-number,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+  color: #880000;
+}
+
+.hljs-title,
+.hljs-section {
+  color: #880000;
+  font-weight: bold;
+}
+
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #BC6060;
+}
+
+
+/* Language color: hue: 90; */
+
+.hljs-literal {
+  color: #78A960;
+}
+
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code,
+.hljs-addition {
+  color: #397300;
+}
+
+
+/* Meta color: hue: 200 */
+
+.hljs-meta {
+  color: #1f7199;
+}
+
+.hljs-meta .hljs--string {
+  color: #4d99bf;
+}
+
+
+/* Misc effects */
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+</style>
+</head><body>
+<div><div class="preview" id="wmd-preview">
+
+	<div class="preview html_preview xsj_export_html"><div style="overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><svg><defs id="MathJax_SVG_glyphs"><path stroke-width="10" id="MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path><path stroke-width="10" id="MJMATHI-64" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path><path stroke-width="10" id="MJMATHI-65" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path><path stroke-width="10" id="MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="10" id="MJMATHI-73" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path><path stroke-width="10" id="MJMAIN-2208" d="M84 250Q84 372 166 450T360 539Q361 539 377 539T419 540T469 540H568Q583 532 583 520Q583 511 570 501L466 500Q355 499 329 494Q280 482 242 458T183 409T147 354T129 306T124 272V270H568Q583 262 583 250T568 230H124V228Q124 207 134 177T167 112T231 48T328 7Q355 1 466 0H570Q583 -10 583 -20Q583 -32 568 -40H471Q464 -40 446 -40T417 -41Q262 -41 172 45Q84 127 84 250Z"></path><path stroke-width="10" id="MJAMS-52" d="M17 665Q17 672 28 683H221Q415 681 439 677Q461 673 481 667T516 654T544 639T566 623T584 607T597 592T607 578T614 565T618 554L621 548Q626 530 626 497Q626 447 613 419Q578 348 473 326L455 321Q462 310 473 292T517 226T578 141T637 72T686 35Q705 30 705 16Q705 7 693 -1H510Q503 6 404 159L306 310H268V183Q270 67 271 59Q274 42 291 38Q295 37 319 35Q344 35 353 28Q362 17 353 3L346 -1H28Q16 5 16 16Q16 35 55 35Q96 38 101 52Q106 60 106 341T101 632Q95 645 55 648Q17 648 17 665ZM241 35Q238 42 237 45T235 78T233 163T233 337V621L237 635L244 648H133Q136 641 137 638T139 603T141 517T141 341Q141 131 140 89T134 37Q133 36 133 35H241ZM457 496Q457 540 449 570T425 615T400 634T377 643Q374 643 339 648Q300 648 281 635Q271 628 270 610T268 481V346H284Q327 346 375 352Q421 364 439 392T457 496ZM492 537T492 496T488 427T478 389T469 371T464 361Q464 360 465 360Q469 360 497 370Q593 400 593 495Q593 592 477 630L457 637L461 626Q474 611 488 561Q492 537 492 496ZM464 243Q411 317 410 317Q404 317 401 315Q384 315 370 312H346L526 35H619L606 50Q553 109 464 243Z"></path><path stroke-width="10" id="MJMATHI-4E" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path stroke-width="10" id="MJMAIN-D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path><path stroke-width="10" id="MJMATHI-44" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path><path stroke-width="10" id="MJMATHI-54" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path><path stroke-width="10" id="MJMATHI-43" d="M50 252Q50 367 117 473T286 641T490 704Q580 704 633 653Q642 643 648 636T656 626L657 623Q660 623 684 649Q691 655 699 663T715 679T725 690L740 705H746Q760 705 760 698Q760 694 728 561Q692 422 692 421Q690 416 687 415T669 413H653Q647 419 647 422Q647 423 648 429T650 449T651 481Q651 552 619 605T510 659Q484 659 454 652T382 628T299 572T226 479Q194 422 175 346T156 222Q156 108 232 58Q280 24 350 24Q441 24 512 92T606 240Q610 253 612 255T628 257Q648 257 648 248Q648 243 647 239Q618 132 523 55T319 -22Q206 -22 128 53T50 252Z"></path><path stroke-width="10" id="MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path><path stroke-width="10" id="MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path><path stroke-width="10" id="MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path stroke-width="10" id="MJMAIN-4C" d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z"></path><path stroke-width="10" id="MJMAIN-69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z"></path><path stroke-width="10" id="MJMAIN-6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path stroke-width="10" id="MJMAIN-65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z"></path><path stroke-width="10" id="MJMAIN-61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z"></path><path stroke-width="10" id="MJMAIN-72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z"></path><path stroke-width="10" id="MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path stroke-width="10" id="MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path stroke-width="10" id="MJMAIN-22C5" d="M78 250Q78 274 95 292T138 310Q162 310 180 294T199 251Q199 226 182 208T139 190T96 207T78 250Z"></path><path stroke-width="10" id="MJMATHI-50" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path><path stroke-width="10" id="MJMATHI-63" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path><path stroke-width="10" id="MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path><path stroke-width="10" id="MJMATHI-61" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path><path stroke-width="10" id="MJMATHI-72" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="10" id="MJMAIN-78" d="M201 0Q189 3 102 3Q26 3 17 0H11V46H25Q48 47 67 52T96 61T121 78T139 96T160 122T180 150L226 210L168 288Q159 301 149 315T133 336T122 351T113 363T107 370T100 376T94 379T88 381T80 383Q74 383 44 385H16V431H23Q59 429 126 429Q219 429 229 431H237V385Q201 381 201 369Q201 367 211 353T239 315T268 274L272 270L297 304Q329 345 329 358Q329 364 327 369T322 376T317 380T310 384L307 385H302V431H309Q324 428 408 428Q487 428 493 431H499V385H492Q443 385 411 368Q394 360 377 341T312 257L296 236L358 151Q424 61 429 57T446 50Q464 46 499 46H516V0H510H502Q494 1 482 1T457 2T432 2T414 3Q403 3 377 3T327 1L304 0H295V46H298Q309 46 320 51T331 63Q331 65 291 120L250 175Q249 174 219 133T185 88Q181 83 181 74Q181 63 188 55T206 46Q208 46 208 23V0H201Z"></path><path stroke-width="10" id="MJMAIN-70" d="M36 -148H50Q89 -148 97 -134V-126Q97 -119 97 -107T97 -77T98 -38T98 6T98 55T98 106Q98 140 98 177T98 243T98 296T97 335T97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 61 434T98 436Q115 437 135 438T165 441T176 442H179V416L180 390L188 397Q247 441 326 441Q407 441 464 377T522 216Q522 115 457 52T310 -11Q242 -11 190 33L182 40V-45V-101Q182 -128 184 -134T195 -145Q216 -148 244 -148H260V-194H252L228 -193Q205 -192 178 -192T140 -191Q37 -191 28 -194H20V-148H36ZM424 218Q424 292 390 347T305 402Q234 402 182 337V98Q222 26 294 26Q345 26 384 80T424 218Z"></path><path stroke-width="10" id="MJSZ1-2211" d="M61 748Q64 750 489 750H913L954 640Q965 609 976 579T993 533T999 516H979L959 517Q936 579 886 621T777 682Q724 700 655 705T436 710H319Q183 710 183 709Q186 706 348 484T511 259Q517 250 513 244L490 216Q466 188 420 134T330 27L149 -187Q149 -188 362 -188Q388 -188 436 -188T506 -189Q679 -189 778 -162T936 -43Q946 -27 959 6H999L913 -249L489 -250Q65 -250 62 -248Q56 -246 56 -239Q56 -234 118 -161Q186 -81 245 -11L428 206Q428 207 242 462L57 717L56 728Q56 744 61 748Z"></path><path stroke-width="10" id="MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path stroke-width="10" id="MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path stroke-width="10" id="MJMATHI-4D" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path><path stroke-width="10" id="MJMATHI-74" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path><path stroke-width="10" id="MJMATHI-4C" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 217 683Q271 680 344 680Q485 680 506 683H518Q524 677 524 674T522 656Q517 641 513 637H475Q406 636 394 628Q387 624 380 600T313 336Q297 271 279 198T252 88L243 52Q243 48 252 48T311 46H328Q360 46 379 47T428 54T478 72T522 106T564 161Q580 191 594 228T611 270Q616 273 628 273H641Q647 264 647 262T627 203T583 83T557 9Q555 4 553 3T537 0T494 -1Q483 -1 418 -1T294 0H116Q32 0 32 10Q32 17 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"></path><path stroke-width="10" id="MJMATHI-41" d="M208 74Q208 50 254 46Q272 46 272 35Q272 34 270 22Q267 8 264 4T251 0Q249 0 239 0T205 1T141 2Q70 2 50 0H42Q35 7 35 11Q37 38 48 46H62Q132 49 164 96Q170 102 345 401T523 704Q530 716 547 716H555H572Q578 707 578 706L606 383Q634 60 636 57Q641 46 701 46Q726 46 726 36Q726 34 723 22Q720 7 718 4T704 0Q701 0 690 0T651 1T578 2Q484 2 455 0H443Q437 6 437 9T439 27Q443 40 445 43L449 46H469Q523 49 533 63L521 213H283L249 155Q208 86 208 74ZM516 260Q516 271 504 416T490 562L463 519Q447 492 400 412L310 260L413 259Q516 259 516 260Z"></path><path stroke-width="10" id="MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path><path stroke-width="10" id="MJMATHI-4B" d="M285 628Q285 635 228 637Q205 637 198 638T191 647Q191 649 193 661Q199 681 203 682Q205 683 214 683H219Q260 681 355 681Q389 681 418 681T463 682T483 682Q500 682 500 674Q500 669 497 660Q496 658 496 654T495 648T493 644T490 641T486 639T479 638T470 637T456 637Q416 636 405 634T387 623L306 305Q307 305 490 449T678 597Q692 611 692 620Q692 635 667 637Q651 637 651 648Q651 650 654 662T659 677Q662 682 676 682Q680 682 711 681T791 680Q814 680 839 681T869 682Q889 682 889 672Q889 650 881 642Q878 637 862 637Q787 632 726 586Q710 576 656 534T556 455L509 418L518 396Q527 374 546 329T581 244Q656 67 661 61Q663 59 666 57Q680 47 717 46H738Q744 38 744 37T741 19Q737 6 731 0H720Q680 3 625 3Q503 3 488 0H478Q472 6 472 9T474 27Q478 40 480 43T491 46H494Q544 46 544 71Q544 75 517 141T485 216L427 354L359 301L291 248L268 155Q245 63 245 58Q245 51 253 49T303 46H334Q340 37 340 35Q340 19 333 5Q328 0 317 0Q314 0 280 1T180 2Q118 2 85 2T49 1Q31 1 31 11Q31 13 34 25Q38 41 42 43T65 46Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Z"></path><path stroke-width="10" id="MJMAIN-AF" d="M69 544V590H430V544H69Z"></path><path stroke-width="10" id="MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path><path stroke-width="10" id="MJMAIN-66" d="M273 0Q255 3 146 3Q43 3 34 0H26V46H42Q70 46 91 49Q99 52 103 60Q104 62 104 224V385H33V431H104V497L105 564L107 574Q126 639 171 668T266 704Q267 704 275 704T289 705Q330 702 351 679T372 627Q372 604 358 590T321 576T284 590T270 627Q270 647 288 667H284Q280 668 273 668Q245 668 223 647T189 592Q183 572 182 497V431H293V385H185V225Q185 63 186 61T189 57T194 54T199 51T206 49T213 48T222 47T231 47T241 46T251 46H282V0H273Z"></path><path stroke-width="10" id="MJSZ2-2211" d="M60 948Q63 950 665 950H1267L1325 815Q1384 677 1388 669H1348L1341 683Q1320 724 1285 761Q1235 809 1174 838T1033 881T882 898T699 902H574H543H251L259 891Q722 258 724 252Q725 250 724 246Q721 243 460 -56L196 -356Q196 -357 407 -357Q459 -357 548 -357T676 -358Q812 -358 896 -353T1063 -332T1204 -283T1307 -196Q1328 -170 1348 -124H1388Q1388 -125 1381 -145T1356 -210T1325 -294L1267 -449L666 -450Q64 -450 61 -448Q55 -446 55 -439Q55 -437 57 -433L590 177Q590 178 557 222T452 366T322 544L56 909L55 924Q55 945 60 948Z"></path><path stroke-width="10" id="MJMATHI-49" d="M43 1Q26 1 26 10Q26 12 29 24Q34 43 39 45Q42 46 54 46H60Q120 46 136 53Q137 53 138 54Q143 56 149 77T198 273Q210 318 216 344Q286 624 286 626Q284 630 284 631Q274 637 213 637H193Q184 643 189 662Q193 677 195 680T209 683H213Q285 681 359 681Q481 681 487 683H497Q504 676 504 672T501 655T494 639Q491 637 471 637Q440 637 407 634Q393 631 388 623Q381 609 337 432Q326 385 315 341Q245 65 245 59Q245 52 255 50T307 46H339Q345 38 345 37T342 19Q338 6 332 0H316Q279 2 179 2Q143 2 113 2T65 2T43 1Z"></path><path stroke-width="10" id="MJMAIN-3E" d="M84 520Q84 528 88 533T96 539L99 540Q106 540 253 471T544 334L687 265Q694 260 694 250T687 235Q685 233 395 96L107 -40H101Q83 -38 83 -20Q83 -19 83 -17Q82 -10 98 -1Q117 9 248 71Q326 108 378 132L626 250L378 368Q90 504 86 509Q84 513 84 520Z"></path><path stroke-width="10" id="MJMAIN-5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path><path stroke-width="10" id="MJMATHI-66" d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z"></path><path stroke-width="10" id="MJMAIN-7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path><path stroke-width="10" id="MJMATHI-3C8" d="M161 441Q202 441 226 417T250 358Q250 338 218 252T187 127Q190 85 214 61Q235 43 257 37Q275 29 288 29H289L371 360Q455 691 456 692Q459 694 472 694Q492 694 492 687Q492 678 411 356Q329 28 329 27T335 26Q421 26 498 114T576 278Q576 302 568 319T550 343T532 361T524 384Q524 405 541 424T583 443Q602 443 618 425T634 366Q634 337 623 288T605 220Q573 125 492 57T329 -11H319L296 -104Q272 -198 272 -199Q270 -205 252 -205H239Q233 -199 233 -197Q233 -192 256 -102T279 -9Q272 -8 265 -8Q106 14 106 139Q106 174 139 264T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Q21 299 34 333T82 404T161 441Z"></path><path stroke-width="10" id="MJMAIN-2299" d="M56 250Q56 394 156 488T384 583Q530 583 626 485T722 250Q722 110 625 14T390 -83Q249 -83 153 14T56 250ZM682 250Q682 322 649 387T546 497T381 542Q272 542 184 459T95 250Q95 132 178 45T389 -42Q515 -42 598 45T682 250ZM311 250Q311 285 332 304T375 328Q376 328 382 328T392 329Q424 326 445 305T466 250Q466 217 445 195T389 172Q354 172 333 195T311 250Z"></path><path stroke-width="10" id="MJMAIN-6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path stroke-width="10" id="MJMATHI-67" d="M311 43Q296 30 267 15T206 0Q143 0 105 45T66 160Q66 265 143 353T314 442Q361 442 401 394L404 398Q406 401 409 404T418 412T431 419T447 422Q461 422 470 413T480 394Q480 379 423 152T363 -80Q345 -134 286 -169T151 -205Q10 -205 10 -137Q10 -111 28 -91T74 -71Q89 -71 102 -80T116 -111Q116 -121 114 -130T107 -144T99 -154T92 -162L90 -164H91Q101 -167 151 -167Q189 -167 211 -155Q234 -144 254 -122T282 -75Q288 -56 298 -13Q311 35 311 43ZM384 328L380 339Q377 350 375 354T369 368T359 382T346 393T328 402T306 405Q262 405 221 352Q191 313 171 233T151 117Q151 38 213 38Q269 38 323 108L331 118L384 328Z"></path><path stroke-width="10" id="MJMATHI-62" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path><path stroke-width="10" id="MJMATHI-3BB" d="M166 673Q166 685 183 694H202Q292 691 316 644Q322 629 373 486T474 207T524 67Q531 47 537 34T546 15T551 6T555 2T556 -2T550 -11H482Q457 3 450 18T399 152L354 277L340 262Q327 246 293 207T236 141Q211 112 174 69Q123 9 111 -1T83 -12Q47 -12 47 20Q47 37 61 52T199 187Q229 216 266 252T321 306L338 322Q338 323 288 462T234 612Q214 657 183 657Q166 657 166 673Z"></path><path stroke-width="10" id="MJMAIN-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path><path stroke-width="10" id="MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></defs></svg></div><h1 class="story_title">TagCLIP</h1><h3 class="xsj_heading_hash xsj_heading xsj_heading_h3" id="e69198e8a681_1"><div class="xiaoshujiang_element xsj_anchor">
+  <a name="e69198e8a681_1" class="blank_anchor_name"></a><a id="e69198e8a681_1" class="blank_anchor_id"></a><a name="摘要" class="blank_anchor_name"></a><a id="摘要" class="blank_anchor_id"></a>
+</div>
+<span class="xsj_heading_content">摘要</span></h3>
+<ol class="markdown_ol">
+<li><span class="xsj_placeholder_span"></span>🏷️CLIP在多标签分类中表现不佳，因其全局特征易受主导类别影响并忽略判别性局部特征，为此，本文提出一个基于冻结CLIP的TagCLIP框架，无需额外训练即可提升性能。</li>
+<li><span class="xsj_placeholder_span"></span>🛠️该框架遵循局部到全局的范式，包含三个核心步骤：首先进行Patch级分类获得粗糙分数；接着采用双掩码注意力细化（DMAR）模块进行优化；最后通过类别级重识别（CWR）模块从全局视角校正预测。</li>
+<li><span class="xsj_placeholder_span"></span>📈实证结果表明，TagCLIP显著提升了CLIP在多标签分类上的性能，并在作为伪标签应用于弱监督语义分割时，其“分类-再分割”范式也大幅超越了其他无标注分割方法。</li>
+</ol>
+<p class="xsj_paragraph xsj_paragraph_level_0">该论文提出了一种名为 <strong class="markdown_strong_asterisk">TagCLIP</strong> 的框架，旨在无需额外训练的情况下，显著提升预训练模型 CLIP 在开放词汇多标签图像分类任务上的性能。</p>
+<p class="xsj_paragraph xsj_paragraph_level_0"><strong class="markdown_strong_asterisk">核心问题与观察：</strong><br>
+CLIP（Contrastive Language-Image Pre-training）在开放词汇单标签分类任务上表现出色，但其在多标签数据集上表现不佳。这主要有两个原因：</p>
+<ol class="markdown_ol">
+<li><span class="xsj_placeholder_span"></span>CLIP 的图像编码器中的 <code>[CLS]</code> token 经过训练旨在捕获全局特征，以区分图像与其对应的文本描述，并通过对比损失和 softmax 操作实现。这种机制导致全局特征倾向于被最显著的类别主导，且 softmax 的竞争性不利于识别多个标签。</li>
+<li><span class="xsj_placeholder_span"></span>多标签分类任务需要判别性的局部特征，但 CLIP 主要通过全局嵌入来表示整个图像，忽略了对特定区域局部特征的显式捕获。作者通过 Class Activation Map (CAM) 发现，图像中高度响应区域主要对应于特定的局部线索。<br>
+论文进一步深入探究 CLIP-ViT 中空间信息的保留情况，发现模型最后一层的自注意力（self-attention）操作会破坏空间信息，导致最终特征图的定位质量不佳。然而，通过跳过最后一层的自注意力操作，使用倒数第二层的特征图（penultimate layer）可以有效地保留空间信息，从而提取局部特征。</li>
+</ol>
+<p class="xsj_paragraph xsj_paragraph_level_0"><strong class="markdown_strong_asterisk">TagCLIP 框架详解：</strong><br>
+基于上述观察，TagCLIP 遵循“从局部到全局”（local-to-global）的范式，由三个核心步骤组成，所有操作均基于冻结（frozen）的 CLIP 模型，无需任何数据集特定的训练：</p>
+<ol class="markdown_ol">
+<li>
+<p class="xsj_paragraph xsj_paragraph_level_2"><strong class="markdown_strong_asterisk">Patch-level Classification (Coarse Classification，粗略分类)：</strong></p>
+<ul class="markdown_ul">
+<li><span class="xsj_placeholder_span"></span>跳过 CLIP-ViT 最后一层的自注意力操作，利用倒数第二层的输出特征图 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-1-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14.699ex" height="2.651ex" viewBox="0 -929.3 6308.1 1116.8" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-78" x="0" y="0"></use><g transform="translate(577,-154)"><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="528" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="999" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1604" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2078" y="0"></use></g><use xlink:href="#MJMAIN-2208" x="2757" y="0"></use><g transform="translate(3706,0)"><use xlink:href="#MJAMS-52" x="0" y="0"></use><g transform="translate(727,419)"><use transform="scale(0.707)" xlink:href="#MJMATHI-4E" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-D7" x="893" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-44" x="1676" y="0"></use></g></g></g></svg></span><script type="math/tex" id="MathJax-Element-1">x_{dense} \in \mathbb{R}^{N \times D}</script></span>（其中 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-2-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.048ex" height="1.687ex" viewBox="0 -712.3 893 741.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4E" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-2">N</script></span> 是 token 长度，<span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-3-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.928ex" height="1.687ex" viewBox="0 -712.3 833 741.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-44" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-3">D</script></span> 是 token 维度）。</li>
+<li><span class="xsj_placeholder_span"></span>将 CLIP 的文本编码器输出 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-4-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="10.361ex" height="2.41ex" viewBox="0 -944.8 4447.2 1015.1" style="vertical-align: -0.241ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-54" x="0" y="0"></use><use xlink:href="#MJMAIN-2208" x="986" y="0"></use><g transform="translate(1936,0)"><use xlink:href="#MJAMS-52" x="0" y="0"></use><g transform="translate(727,419)"><use transform="scale(0.707)" xlink:href="#MJMATHI-44" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-D7" x="833" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-43" x="1616" y="0"></use></g></g></g></svg></span><script type="math/tex" id="MathJax-Element-4">T \in \mathbb{R}^{D \times C}</script></span>（<span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-5-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.807ex" height="1.807ex" viewBox="0 -734.3 765 785.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-43" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-5">C</script></span> 是类别数量）作为分类器。</li>
+<li><span class="xsj_placeholder_span"></span>计算每个图像 patch 的分类分数 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-6-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.928ex" height="1.566ex" viewBox="0 -472.3 821.5 656.4" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-73" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="670" y="-213"></use></g></svg></span><script type="math/tex" id="MathJax-Element-6">s_i</script></span>，通过将图像 token <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-7-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.747ex" height="1.807ex" viewBox="0 -471.3 2927 788.9" style="vertical-align: -0.723ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-78" x="0" y="0"></use><g transform="translate(577,-154)"><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="528" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="999" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1604" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2078" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-2C" x="2549" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="2832" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-7">x_{dense,i}</script></span> 与文本描述 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-8-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.687ex" height="1.687ex" viewBox="0 -706.3 709 735.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-54" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-8">T</script></span> 映射到统一空间后的相似度表示：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-9-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="23.532ex" height="2.477ex" viewBox="0 -776.9 10136.5 1092.1" style="vertical-align: -0.826ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-73" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="670" y="-213"></use><use xlink:href="#MJMAIN-3D" x="1099" y="0"></use><g transform="translate(2160,0)"><use xlink:href="#MJMAIN-4C"></use><use xlink:href="#MJMAIN-69" x="630" y="0"></use><use xlink:href="#MJMAIN-6E" x="913" y="0"></use><use xlink:href="#MJMAIN-65" x="1474" y="0"></use><use xlink:href="#MJMAIN-61" x="1923" y="0"></use><use xlink:href="#MJMAIN-72" x="2428" y="0"></use></g><use xlink:href="#MJMAIN-28" x="4985" y="0"></use><g transform="translate(5379,0)"><use xlink:href="#MJMATHI-78" x="0" y="0"></use><g transform="translate(577,-154)"><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="528" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="999" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1604" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2078" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-2C" x="2549" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="2832" y="0"></use></g></g><use xlink:href="#MJMAIN-29" x="8306" y="0"></use><use xlink:href="#MJMAIN-22C5" x="8922" y="0"></use><use xlink:href="#MJMATHI-54" x="9427" y="0"></use></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-9">s_i = \text{Linear}(x_{dense,i}) \cdot T</script></div></div></li>
+<li><span class="xsj_placeholder_span"></span>这些相似度分数可选地通过 softmax 函数进行归一化，得到每个 patch 对应每个类别的概率分类分数：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-10-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="28.761ex" height="6.743ex" viewBox="0 -1589.9 12383 2912.3" style="vertical-align: -3.165ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="928" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="1462" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1918" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2392" y="0"></use></g><use xlink:href="#MJMAIN-28" x="2771" y="0"></use><use xlink:href="#MJMATHI-69" x="3165" y="0"></use><use xlink:href="#MJMAIN-2C" x="3515" y="0"></use><use xlink:href="#MJMATHI-63" x="3965" y="0"></use><use xlink:href="#MJMAIN-29" x="4403" y="0"></use><use xlink:href="#MJMAIN-3D" x="5074" y="0"></use><g transform="translate(5857,0)"><g transform="translate(397,0)"><rect stroke="none" width="6007" height="60" x="0" y="220"></rect><g transform="translate(1396,813)"><use xlink:href="#MJMAIN-65"></use><use xlink:href="#MJMAIN-78" x="449" y="0"></use><use xlink:href="#MJMAIN-70" x="982" y="0"></use><use xlink:href="#MJMAIN-28" x="1543" y="0"></use><g transform="translate(1937,0)"><use xlink:href="#MJMATHI-73" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="670" y="509"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="670" y="-439"></use></g><use xlink:href="#MJMAIN-29" x="2820" y="0"></use></g><g transform="translate(60,-981)"><use xlink:href="#MJSZ1-2211" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-43" x="1500" y="688"></use><g transform="translate(1061,-296)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6B" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-3D" x="526" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-31" x="1309" y="0"></use></g><g transform="translate(2610,0)"><use xlink:href="#MJMAIN-65"></use><use xlink:href="#MJMAIN-78" x="449" y="0"></use><use xlink:href="#MJMAIN-70" x="982" y="0"></use></g><use xlink:href="#MJMAIN-28" x="4153" y="0"></use><g transform="translate(4547,0)"><use xlink:href="#MJMATHI-73" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6B" x="670" y="508"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="670" y="-439"></use></g><use xlink:href="#MJMAIN-29" x="5493" y="0"></use></g></g></g></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-10">P_{coarse}(i, c) = \frac{\exp(s_i^c)}{\sum_{k=1}^{C} \exp(s_i^k)}</script></div></div><br>
+这个步骤提供了图像中每个局部区域（patch）对每个类别的初步置信度。</li>
+</ul>
+</li>
+<li>
+<p class="xsj_paragraph xsj_paragraph_level_2"><strong class="markdown_strong_asterisk">Dual-Masking Attention Refinement (DMAR，双掩码注意力细化)：</strong></p>
+<ul class="markdown_ul">
+<li><span class="xsj_placeholder_span"></span>粗略分类分数 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-11-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.386ex" height="2.048ex" viewBox="0 -712.3 2771.4 897.1" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="928" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="1462" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1918" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2392" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-11">P_{coarse}</script></span> 通常存在噪声。为了细化这些分数并利用 ViT 固有的自注意力机制，作者提出双掩码策略。</li>
+<li><strong class="markdown_strong_asterisk">注意力掩码（Attention Mask <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-12-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.542ex" height="2.048ex" viewBox="0 -713.3 2398 897.4" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="534" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="900" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1266" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-12">M_{attn}</script></span>）：</strong> 基于所有 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-13-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.566ex" height="1.687ex" viewBox="0 -712.3 686 743.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4C" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-13">L</script></span> 个注意力层的注意力权重 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-14-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="13.133ex" height="2.289ex" viewBox="0 -929.3 5664.9 999.6" style="vertical-align: -0.241ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-41" x="0" y="0"></use><use xlink:href="#MJMAIN-2208" x="1032" y="0"></use><g transform="translate(1982,0)"><use xlink:href="#MJAMS-52" x="0" y="0"></use><g transform="translate(727,419)"><use transform="scale(0.707)" xlink:href="#MJMATHI-4E" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-D7" x="893" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-4E" x="1676" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-D7" x="2569" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-4C" x="3352" y="0"></use></g></g></g></svg></span><script type="math/tex" id="MathJax-Element-14">A \in \mathbb{R}^{N \times N \times L}</script></span>，通过投票式方法选择置信度高的元素。如果一个位置 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-15-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.699ex" height="2.41ex" viewBox="0 -779.3 2004.7 1058.6" style="vertical-align: -0.723ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMAIN-28" x="0" y="0"></use><use xlink:href="#MJMATHI-69" x="394" y="0"></use><use xlink:href="#MJMAIN-2C" x="744" y="0"></use><use xlink:href="#MJMATHI-6A" x="1193" y="0"></use><use xlink:href="#MJMAIN-29" x="1610" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-15">(i, j)</script></span> 在至少 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-16-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.048ex" height="1.687ex" viewBox="0 -712.3 894 741.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4B" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-16">K</script></span> 个层中的注意力值超过该层的平均值 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-17-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.53ex" height="2.53ex" viewBox="0 -889.1 1083.3 1078" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-41" x="0" y="0"></use><use xlink:href="#MJMAIN-AF" x="264" y="269"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1087" y="-218"></use></g></svg></span><script type="math/tex" id="MathJax-Element-17">\bar{A}_l</script></span>，则被认为是可靠的：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-18-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="45.413ex" height="7.018ex" viewBox="0 -1766.9 19535.9 3024.5" style="vertical-align: -3.028ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="534" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="900" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1266" y="0"></use></g><use xlink:href="#MJMAIN-28" x="2397" y="0"></use><use xlink:href="#MJMATHI-69" x="2791" y="0"></use><use xlink:href="#MJMAIN-2C" x="3141" y="0"></use><use xlink:href="#MJMATHI-6A" x="3591" y="0"></use><use xlink:href="#MJMAIN-29" x="4008" y="0"></use><use xlink:href="#MJMAIN-3D" x="4680" y="0"></use><use xlink:href="#MJMAIN-31" x="5741" y="0"></use><use xlink:href="#MJMAIN-2C" x="6246" y="0"></use><g transform="translate(7695,0)"><use xlink:href="#MJMAIN-69"></use><use xlink:href="#MJMAIN-66" x="283" y="0"></use></g><g transform="translate(8456,0)"><use xlink:href="#MJSZ2-2211" x="0" y="0"></use><g transform="translate(161,-1126)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-3D" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-31" x="1086" y="0"></use></g><use transform="scale(0.707)" xlink:href="#MJMATHI-4C" x="681" y="1640"></use></g><use xlink:href="#MJMATHI-49" x="10072" y="0"></use><use xlink:href="#MJMAIN-28" x="10581" y="0"></use><use xlink:href="#MJMATHI-41" x="10975" y="0"></use><use xlink:href="#MJMAIN-28" x="11730" y="0"></use><use xlink:href="#MJMATHI-69" x="12124" y="0"></use><use xlink:href="#MJMAIN-2C" x="12474" y="0"></use><use xlink:href="#MJMATHI-6A" x="12923" y="0"></use><use xlink:href="#MJMAIN-2C" x="13340" y="0"></use><use xlink:href="#MJMATHI-6C" x="13790" y="0"></use><use xlink:href="#MJMAIN-29" x="14093" y="0"></use><use xlink:href="#MJMAIN-3E" x="14765" y="0"></use><g transform="translate(15826,0)"><use xlink:href="#MJMATHI-41" x="0" y="0"></use><use xlink:href="#MJMAIN-AF" x="264" y="280"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1087" y="-218"></use></g><use xlink:href="#MJMAIN-29" x="16909" y="0"></use><use xlink:href="#MJMAIN-3E" x="17581" y="0"></use><use xlink:href="#MJMATHI-4B" x="18641" y="0"></use></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-18">M_{attn}(i, j) = 1, \quad \text{if} \sum_{l=1}^{L} I(A(i,j,l) > \bar{A}_l) > K</script></div></div><br>
+其中 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-19-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.205ex" height="1.687ex" viewBox="0 -712.3 509 741.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-49" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-19">I</script></span> 是指示函数。细化过程初步表示为：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-20-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="39.083ex" height="6.468ex" viewBox="0 -1369.4 16832.1 2763.5" style="vertical-align: -3.303ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><use xlink:href="#MJMAIN-5E" x="279" y="260"></use><g transform="translate(784,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="456" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="927" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="1482" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1831" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2436" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="2907" y="0"></use></g><use xlink:href="#MJMAIN-3D" x="3592" y="0"></use><g transform="translate(4375,0)"><g transform="translate(397,0)"><rect stroke="none" width="1342" height="60" x="0" y="220"></rect><use xlink:href="#MJMAIN-31" x="418" y="676"></use><g transform="translate(60,-749)"><use xlink:href="#MJMAIN-7C" x="0" y="0"></use><use xlink:href="#MJMATHI-3C8" x="283" y="0"></use><use xlink:href="#MJMAIN-7C" x="939" y="0"></use></g></g></g><g transform="translate(6401,0)"><use xlink:href="#MJSZ2-2211" x="0" y="0"></use><g transform="translate(147,-1126)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-2208" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-3C8" x="974" y="0"></use></g></g><use xlink:href="#MJMAIN-28" x="7850" y="0"></use><g transform="translate(8244,0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="534" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="900" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1266" y="0"></use></g></g><use xlink:href="#MJMAIN-2299" x="10864" y="0"></use><g transform="translate(11869,0)"><use xlink:href="#MJMATHI-41" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1067" y="-218"></use></g><use xlink:href="#MJMAIN-29" x="12939" y="0"></use><use xlink:href="#MJMAIN-22C5" x="13555" y="0"></use><g transform="translate(14060,0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="928" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="1462" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1918" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2392" y="0"></use></g></g></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-20">\hat{P}_{refined} = \frac{1}{|\psi|}\sum_{l \in \psi} (M_{attn} \odot A_l) \cdot P_{coarse}</script></div></div><br>
+其中 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-21-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.807ex" height="1.687ex" viewBox="0 -612.3 783 724.6" style="vertical-align: -0.361ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMAIN-2299" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-21">\odot</script></span> 表示 Hadamard 积。</li>
+<li><strong class="markdown_strong_asterisk">类别掩码（Class-wise Mask <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-22-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.458ex" height="2.048ex" viewBox="0 -713.3 1934.1 902.2" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="741" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-22">M_{cls}</script></span>）：</strong> 根据 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-23-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.711ex" height="3.012ex" viewBox="0 -973.1 3314.3 1305.5" style="vertical-align: -0.843ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><use xlink:href="#MJMAIN-5E" x="279" y="249"></use><g transform="translate(784,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="456" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="927" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="1482" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1831" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2436" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="2907" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-23">\hat{P}_{refined}</script></span> 计算每个类别的平均分数，并忽略低于平均分数的不可靠位置，生成一个扩展的类别掩码 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-24-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="16.024ex" height="2.651ex" viewBox="0 -944.8 6899.8 1133.7" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="741" y="0"></use></g><use xlink:href="#MJMAIN-2208" x="2211" y="0"></use><g transform="translate(3161,0)"><use xlink:href="#MJAMS-52" x="0" y="0"></use><g transform="translate(727,419)"><use transform="scale(0.707)" xlink:href="#MJMATHI-4E" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-D7" x="893" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-4E" x="1676" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-D7" x="2569" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-43" x="3352" y="0"></use></g></g></g></svg></span><script type="math/tex" id="MathJax-Element-24">M_{cls} \in \mathbb{R}^{N \times N \times C}</script></span>。</li>
+<li><span class="xsj_placeholder_span"></span>最终的细化分数 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-25-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="10.241ex" height="2.53ex" viewBox="0 -779.3 4402.6 1111.7" style="vertical-align: -0.843ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="456" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="927" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="1482" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1831" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2436" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="2907" y="0"></use></g><use xlink:href="#MJMAIN-28" x="3176" y="0"></use><use xlink:href="#MJMATHI-63" x="3570" y="0"></use><use xlink:href="#MJMAIN-29" x="4008" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-25">P_{refined}(c)</script></span> 通过结合这两个掩码得到：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-26-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="54.633ex" height="6.468ex" viewBox="0 -1369.4 23534 2763.5" style="vertical-align: -3.303ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="456" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="927" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="1482" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1831" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2436" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="2907" y="0"></use></g><use xlink:href="#MJMAIN-28" x="3176" y="0"></use><use xlink:href="#MJMATHI-63" x="3570" y="0"></use><use xlink:href="#MJMAIN-29" x="4008" y="0"></use><use xlink:href="#MJMAIN-3D" x="4680" y="0"></use><g transform="translate(5463,0)"><g transform="translate(397,0)"><rect stroke="none" width="1342" height="60" x="0" y="220"></rect><use xlink:href="#MJMAIN-31" x="418" y="676"></use><g transform="translate(60,-749)"><use xlink:href="#MJMAIN-7C" x="0" y="0"></use><use xlink:href="#MJMATHI-3C8" x="283" y="0"></use><use xlink:href="#MJMAIN-7C" x="939" y="0"></use></g></g></g><g transform="translate(7489,0)"><use xlink:href="#MJSZ2-2211" x="0" y="0"></use><g transform="translate(147,-1126)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMAIN-2208" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-3C8" x="974" y="0"></use></g></g><use xlink:href="#MJMAIN-28" x="8938" y="0"></use><g transform="translate(9332,0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="534" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-74" x="900" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1266" y="0"></use></g></g><use xlink:href="#MJMAIN-2299" x="11953" y="0"></use><g transform="translate(12958,0)"><use xlink:href="#MJMATHI-41" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1067" y="-218"></use></g><use xlink:href="#MJMAIN-2299" x="14249" y="0"></use><g transform="translate(15254,0)"><use xlink:href="#MJMATHI-4D" x="0" y="0"></use><g transform="translate(975,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="741" y="0"></use></g></g><use xlink:href="#MJMAIN-28" x="17189" y="0"></use><use xlink:href="#MJMATHI-63" x="17583" y="0"></use><use xlink:href="#MJMAIN-29" x="18021" y="0"></use><use xlink:href="#MJMAIN-29" x="18415" y="0"></use><use xlink:href="#MJMAIN-22C5" x="19031" y="0"></use><g transform="translate(19536,0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="928" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="1462" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1918" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2392" y="0"></use></g></g><use xlink:href="#MJMAIN-28" x="22308" y="0"></use><use xlink:href="#MJMATHI-63" x="22702" y="0"></use><use xlink:href="#MJMAIN-29" x="23140" y="0"></use></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-26">P_{refined}(c) = \frac{1}{|\psi|}\sum_{l \in \psi} (M_{attn} \odot A_l \odot M_{cls}(c)) \cdot P_{coarse}(c)</script></div></div><br>
+DMAR 旨在通过利用 ViT 内部的注意力机制，在不引入额外训练的情况下，提升 patch 级分类分数的准确性。</li>
+</ul>
+</li>
+<li>
+<p class="xsj_paragraph xsj_paragraph_level_2"><strong class="markdown_strong_asterisk">Class-Wise Reidentification (CWR，类别重识别)：</strong></p>
+<ul class="markdown_ul">
+<li><span class="xsj_placeholder_span"></span>Patch 级分类虽然能发现判别性局部特征，但可能因缺乏全局视角而导致误分类。CWR 模块从全局视角进一步修正预测分数。</li>
+<li><span class="xsj_placeholder_span"></span>首先，从 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-27-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.386ex" height="2.048ex" viewBox="0 -712.3 2771.4 897.1" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="928" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="1462" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1918" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2392" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-27">P_{coarse}</script></span> 中提取每个类别的局部置信度 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-28-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.952ex" height="2.41ex" viewBox="0 -779.3 3435.3 1058.6" style="vertical-align: -0.723ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="793" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1231" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1765" y="0"></use></g><use xlink:href="#MJMAIN-28" x="2209" y="0"></use><use xlink:href="#MJMATHI-63" x="2603" y="0"></use><use xlink:href="#MJMAIN-29" x="3041" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-28">P_{local}(c)</script></span>，即该类别在所有 patch 中的最高分数：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-29-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="28.349ex" height="3.716ex" viewBox="0 -776.9 12235 1570.7" style="vertical-align: -1.927ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="793" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1231" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1765" y="0"></use></g><use xlink:href="#MJMAIN-28" x="2209" y="0"></use><use xlink:href="#MJMATHI-63" x="2603" y="0"></use><use xlink:href="#MJMAIN-29" x="3041" y="0"></use><use xlink:href="#MJMAIN-3D" x="3713" y="0"></use><g transform="translate(4773,0)"><use xlink:href="#MJMAIN-6D"></use><use xlink:href="#MJMAIN-61" x="838" y="0"></use><use xlink:href="#MJMAIN-78" x="1343" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="1151" y="-937"></use></g><use xlink:href="#MJMAIN-28" x="6649" y="0"></use><g transform="translate(7043,0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-150)"><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="437" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="928" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="1462" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-73" x="1918" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2392" y="0"></use></g></g><use xlink:href="#MJMAIN-28" x="9815" y="0"></use><use xlink:href="#MJMATHI-69" x="10209" y="0"></use><use xlink:href="#MJMAIN-2C" x="10559" y="0"></use><use xlink:href="#MJMATHI-63" x="11008" y="0"></use><use xlink:href="#MJMAIN-29" x="11446" y="0"></use><use xlink:href="#MJMAIN-29" x="11840" y="0"></use></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-29">P_{local}(c) = \max_i (P_{coarse}(i, c))</script></div></div></li>
+<li><span class="xsj_placeholder_span"></span>对于每个类别，从 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-30-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.349ex" height="2.41ex" viewBox="0 -712.3 3176.6 1044.7" style="vertical-align: -0.843ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-72" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="456" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="927" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="1482" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="1831" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-65" x="2436" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-64" x="2907" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-30">P_{refined}</script></span> 中选出响应度高的 patch，形成一个类别相关的区域（class-wise mask）。</li>
+<li><span class="xsj_placeholder_span"></span>根据该区域的边界框裁剪图像并调整大小（例如 224x224）。这个类别掩码用作 ViT 中的注意力掩码，以排除不属于该类别的 patch。</li>
+<li><span class="xsj_placeholder_span"></span>将此掩码图像输入原始 CLIP，并使用 <code>[CLS]</code> token 进行分类，得到全局结果 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-31-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.904ex" height="2.41ex" viewBox="0 -712.3 2549.4 1037.7" style="vertical-align: -0.843ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-67" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="485" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="788" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-62" x="1278" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1711" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="2246" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-31">P_{global}</script></span>。</li>
+<li><span class="xsj_placeholder_span"></span>最后，将局部分数 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-32-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.181ex" height="2.048ex" viewBox="0 -712.3 2209.3 901.2" style="vertical-align: -0.482ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="793" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1231" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1765" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-32">P_{local}</script></span> 与全局分数 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-33-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.904ex" height="2.41ex" viewBox="0 -712.3 2549.4 1037.7" style="vertical-align: -0.843ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-67" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="485" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="788" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-62" x="1278" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1711" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="2246" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-33">P_{global}</script></span> 进行融合，得到最终分数 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-34-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.542ex" height="2.41ex" viewBox="0 -712.3 2406.6 1044.7" style="vertical-align: -0.843ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="555" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="905" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1510" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="2044" y="0"></use></g></g></svg></span><script type="math/tex" id="MathJax-Element-34">P_{final}</script></span>：<br>
+<div class="mathjax-container" data-vdom-skip="true" data-vdom-mathjax="true"><div class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><div class="MathJax_SVG_Display" style="text-align: center;"><span class="MathJax_SVG" id="MathJax-Element-35-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="31.239ex" height="2.615ex" viewBox="0 -776.9 13427.7 1106.9" style="vertical-align: -0.826ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-162)"><use transform="scale(0.707)" xlink:href="#MJMATHI-66" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-69" x="555" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6E" x="905" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1510" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="2044" y="0"></use></g><use xlink:href="#MJMAIN-3D" x="2684" y="0"></use><use xlink:href="#MJMATHI-3BB" x="3745" y="0"></use><g transform="translate(4333,0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="303" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-63" x="793" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1231" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="1765" y="0"></use></g></g><use xlink:href="#MJMAIN-2B" x="6764" y="0"></use><use xlink:href="#MJMAIN-28" x="7769" y="0"></use><use xlink:href="#MJMAIN-31" x="8163" y="0"></use><use xlink:href="#MJMAIN-2212" x="8891" y="0"></use><use xlink:href="#MJMATHI-3BB" x="9896" y="0"></use><use xlink:href="#MJMAIN-29" x="10484" y="0"></use><g transform="translate(10878,0)"><use xlink:href="#MJMATHI-50" x="0" y="0"></use><g transform="translate(647,-155)"><use transform="scale(0.707)" xlink:href="#MJMATHI-67" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="485" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6F" x="788" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-62" x="1278" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-61" x="1711" y="0"></use><use transform="scale(0.707)" xlink:href="#MJMATHI-6C" x="2246" y="0"></use></g></g></g></svg></span></div><script type="math/tex; mode=display" id="MathJax-Element-35">P_{final} = \lambda P_{local} + (1 - \lambda) P_{global}</script></div></div><br>
+其中 <span class="mathjax" data-vdom-skip="true" data-vdom-mathjax="true"><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-36-Frame" role="math" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.325ex" height="1.807ex" viewBox="0 -723.3 588 764.6" style="vertical-align: -0.12ex; margin: 1px 0ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-3BB" x="0" y="0"></use></g></svg></span><script type="math/tex" id="MathJax-Element-36">\lambda</script></span> 是平衡局部和全局影响的系数，论文中设为 0.5。CWR 提供了一种“双重检查”机制，融合了局部和全局视图的优势，有效抑制假阳性并提升漏判类别的分数。</li>
+</ul>
+</li>
+</ol>
+<p class="xsj_paragraph xsj_paragraph_level_0"><strong class="markdown_strong_asterisk">下游任务应用：弱监督语义分割（WSSS）：</strong><br>
+TagCLIP 生成的图像标签可以作为高质量的伪标签，应用于依赖图像级标签的下游任务。论文将 TagCLIP 与现有的 WSSS 方法（例如 CLIP-ES）结合，实现了无标注（annotation-free）的语义分割。这种“先分类再分割”（classify-then-segment）的范式，相较于以往的“自下而上”（bottom-up）无标注分割方法，取得了显著的性能提升，证明了图像级监督对分割任务的重要性。</p>
+<p class="xsj_paragraph xsj_paragraph_level_0"><strong class="markdown_strong_asterisk">实验结果与贡献：</strong></p>
+<ul class="markdown_ul">
+<li><strong class="markdown_strong_asterisk">多标签分类性能：</strong> TagCLIP 在 PASCAL VOC 2007 和 MS COCO 2014 数据集上显著优于原始 CLIP 和其他无需额外训练的方法，在 VOC 和 COCO 上分别提升了 7.0% 和 5.5% 的 mAP。它甚至能与需要额外数据和训练的监督方法相媲美。</li>
+<li><strong class="markdown_strong_asterisk">语义分割性能：</strong> CLS-SEG（TagCLIP 与 WSSS 结合）在 PASCAL VOC 2012、MS COCO 2017 和 COCO-Stuff 上全面超越了传统的无监督语义分割方法和近期基于 CLIP 的方法，验证了生成标签的高质量以及“先分类再分割”范式的有效性。高层次的类别概念指导对于获得高质量分割掩码至关重要。</li>
+<li><strong class="markdown_strong_asterisk">消融研究：</strong> DMAR 和 CWR 模块被证明能显著提升分类和分割性能。多层注意力权重融合比单层效果更好，且双掩码策略有效降低了噪声影响。</li>
+</ul>
+<p class="xsj_paragraph xsj_paragraph_level_0"><strong class="markdown_strong_asterisk">局限性：</strong><br>
+TagCLIP 在类别之间相互竞争的数据集（如“猫”和“狗”）上表现良好，但对于类别间存在包含关系（如“猫”和“动物”）或需要更强上下文依赖的场景类别（如“天空”）可能不是最优。这是因为 CLIP 的对比损失倾向于促使不同类别之间产生竞争，而非层级关系。作者提出未来可以探索自训练（self-training）方法来解决此问题。</p>
+<p class="xsj_paragraph xsj_paragraph_level_0">总而言之，TagCLIP 框架通过对 CLIP 内部空间信息的深入分析，并设计了从局部到全局的精巧流程，在无需额外训练的情况下，极大地提升了 CLIP 在开放词汇多标签分类任务上的能力，并为无标注语义分割等下游任务提供了高质量的伪标签。</p>
+</div>
+
+</div></div>
+</body></html>
+
