@@ -1,19 +1,39 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-<canvas id="pdf-canvas"></canvas>
-<script>
-  var url = './TagCLIP_zh.pdf';
-  var canvas = document.getElementById('pdf-canvas');
-  var context = canvas.getContext('2d');
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+<div id="pdf-container"></div>
+
+<script>
+  var url = './TagCLIP_zh.pdf';  // PDF文件的路径
+  var currentPage = 1;  // 当前显示的页面
+  var totalPages = 0;  // 总页数
+  
+  // 获取 PDF 文件
   pdfjsLib.getDocument(url).promise.then(function(pdf) {
-    pdf.getPage(1).then(function(page) {
-      var viewport = page.getViewport({ scale: 1.5 });
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      page.render({
-        canvasContext: context,
-        viewport: viewport
+    totalPages = pdf.numPages;  // 获取总页数
+    
+    // 渲染页面
+    function renderPage(pageNum) {
+      pdf.getPage(pageNum).then(function(page) {
+        var viewport = page.getViewport({ scale: 1.5 });
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        document.getElementById('pdf-container').appendChild(canvas);
+        
+        page.render({
+          canvasContext: context,
+          viewport: viewport
+        });
       });
-    });
+    }
+
+    // 渲染所有页面
+    for (var i = 1; i <= totalPages; i++) {
+      renderPage(i);
+    }
   });
 </script>
+
