@@ -91,8 +91,17 @@
   </div>
 
   <script>
-    // 从 LocalStorage 获取项目数据，若没有则初始化为空数组
-    let projects = JSON.parse(localStorage.getItem('projects')) || [];
+    // 默认项目和链接
+    const defaultProject = {
+      name: "TagCLIP",
+      links: [
+        { name: "TagCLIP中文页面", url: "https://wang-akang.github.io/result/TagCLIP/zh.html" },
+        { name: "TagCLIP总结页面", url: "https://wang-akang.github.io/result/TagCLIP/ai.html" }
+      ]
+    };
+
+    // 从 LocalStorage 获取项目数据，若没有则初始化为默认项目
+    let projects = JSON.parse(localStorage.getItem('projects')) || [defaultProject];
 
     // 更新 LocalStorage 中的项目数据
     function saveProjects() {
