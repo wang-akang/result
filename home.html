@@ -99,6 +99,32 @@
       localStorage.setItem('projects', JSON.stringify(projects));
     }
 
+    // 更新项目列表
+    function updateProjectList() {
+      const projectList = document.getElementById('project-list');
+      projectList.innerHTML = '';
+
+      // 渲染项目
+      projects.forEach((project, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <strong>${project.name}</strong>
+          <ul>
+            ${project.links.map((link, linkIndex) => `
+              <li>
+                <a href="${link.url}" target="_blank">${link.name}</a>
+                <button onclick="editLink(${index}, ${linkIndex})">编辑链接</button>
+                <button onclick="deleteLink(${index}, ${linkIndex})">删除链接</button>
+              </li>
+            `).join('')}
+          </ul>
+          <button onclick="editProject(${index})">编辑项目</button>
+          <button onclick="deleteProject(${index})">删除项目</button>
+        `;
+        projectList.appendChild(listItem);
+      });
+    }
+
     // 添加项目的函数
     function addProject() {
       const name = document.getElementById('project-name').value;
@@ -151,32 +177,6 @@
       } else {
         alert("请填写链接名称和链接URL！");
       }
-    }
-
-    // 更新项目列表
-    function updateProjectList() {
-      const projectList = document.getElementById('project-list');
-      projectList.innerHTML = '';
-
-      // 渲染项目
-      projects.forEach((project, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-          <strong>${project.name}</strong>
-          <ul>
-            ${project.links.map((link, linkIndex) => `
-              <li>
-                <a href="${link.url}" target="_blank">${link.name}</a>
-                <button onclick="editLink(${index}, ${linkIndex})">编辑链接</button>
-                <button onclick="deleteLink(${index}, ${linkIndex})">删除链接</button>
-              </li>
-            `).join('')}
-          </ul>
-          <button onclick="editProject(${index})">编辑项目</button>
-          <button onclick="deleteProject(${index})">删除项目</button>
-        `;
-        projectList.appendChild(listItem);
-      });
     }
 
     // 编辑项目
