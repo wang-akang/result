@@ -70,11 +70,17 @@
     </div>
 
     <div class="form-group">
+      <label for="link-name">链接名称</label>
+      <input type="text" id="link-name" placeholder="请输入链接名称">
+    </div>
+
+    <div class="form-group">
       <label for="project-link">项目链接</label>
       <input type="url" id="project-link" placeholder="请输入项目链接">
     </div>
 
     <div class="button-container">
+      <button onclick="addProjectLink()">添加链接</button>
       <button onclick="addProject()">添加项目</button>
     </div>
 
@@ -96,11 +102,9 @@
     // 添加项目的函数
     function addProject() {
       const name = document.getElementById('project-name').value;
-      const link = document.getElementById('project-link').value;
-
-      if (name && link) {
+      if (name) {
         // 创建项目对象
-        const project = { name: name, link: link };
+        const project = { name: name, links: [] };
 
         // 将项目添加到数组
         projects.push(project);
@@ -113,9 +117,39 @@
 
         // 清空输入框
         document.getElementById('project-name').value = '';
-        document.getElementById('project-link').value = '';
       } else {
-        alert("请填写完整的项目名称和链接！");
+        alert("请填写项目名称！");
+      }
+    }
+
+    // 为当前项目添加链接的函数
+    function addProjectLink() {
+      const linkName = document.getElementById('link-name').value;
+      const linkURL = document.getElementById('project-link').value;
+      const projectName = document.getElementById('project-name').value;
+
+      if (linkName && linkURL && projectName) {
+        // 查找当前项目
+        const project = projects.find(p => p.name === projectName);
+        
+        if (project) {
+          // 添加链接到项目
+          project.links.push({ name: linkName, url: linkURL });
+
+          // 保存到 LocalStorage
+          saveProjects();
+
+          // 更新项目列表
+          updateProjectList();
+
+          // 清空输入框
+          document.getElementById('link-name').value = '';
+          document.getElementById('project-link').value = '';
+        } else {
+          alert("项目未找到！");
+        }
+      } else {
+        alert("请填写链接名称和链接URL！");
       }
     }
 
@@ -128,9 +162,18 @@
       projects.forEach((project, index) => {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-          <a href="${project.link}" target="_blank">${project.name}</a>
-          <button onclick="editProject(${index})">编辑</button>
-          <button onclick="deleteProject(${index})">删除</button>
+          <strong>${project.name}</strong>
+          <ul>
+            ${project.links.map((link, linkIndex) => `
+              <li>
+                <a href="${link.url}" target="_blank">${link.name}</a>
+                <button onclick="editLink(${index}, ${linkIndex})">编辑链接</button>
+                <button onclick="deleteLink(${index}, ${linkIndex})">删除链接</button>
+              </li>
+            `).join('')}
+          </ul>
+          <button onclick="editProject(${index})">编辑项目</button>
+          <button onclick="deleteProject(${index})">删除项目</button>
         `;
         projectList.appendChild(listItem);
       });
@@ -138,12 +181,9 @@
 
     // 编辑项目
     function editProject(index) {
-      const project = projects[index];
-      const newName = prompt("编辑项目名称", project.name);
-      const newLink = prompt("编辑项目链接", project.link);
-
-      if (newName && newLink) {
-        projects[index] = { name: newName, link: newLink };
+      const newName = prompt("编辑项目名称", projects[index].name);
+      if (newName) {
+        projects[index].name = newName;
         saveProjects();
         updateProjectList();
       }
@@ -153,6 +193,27 @@
     function deleteProject(index) {
       if (confirm("确定删除此项目吗？")) {
         projects.splice(index, 1);
+        saveProjects();
+        updateProjectList();
+      }
+    }
+
+    // 编辑链接
+    function editLink(projectIndex, linkIndex) {
+      const newLinkName = prompt("编辑链接名称", projects[projectIndex].links[linkIndex].name);
+      const newLinkURL = prompt("编辑链接URL", projects[projectIndex].links[linkIndex].url);
+
+      if (newLinkName && newLinkURL) {
+        projects[projectIndex].links[linkIndex] = { name: newLinkName, url: newLinkURL };
+        saveProjects();
+        updateProjectList();
+      }
+    }
+
+    // 删除链接
+    function deleteLink(projectIndex, linkIndex) {
+      if (confirm("确定删除此链接吗？")) {
+        projects[projectIndex].links.splice(linkIndex, 1);
         saveProjects();
         updateProjectList();
       }
